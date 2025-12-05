@@ -29,8 +29,8 @@ jobs:
       - name: Create deployment package (without node_modules)
         run: |
           mkdir -p deploy
-          cp -r index.js deploy/
-          cp package*.json deploy/
+          cp -r * deploy/
+          rm -rf deploy/node_modules
           # Copy .env.example if exists
           [ -f .env.example ] && cp .env.example deploy/ || echo "No .env.example found"
           tar -czf deploy.tar.gz -C deploy .
@@ -115,10 +115,10 @@ jobs:
             # Zero-downtime reload with PM2 
             if pm2 describe sum-CICD > /dev/null 2>&1; then
               echo "Reloading PM2 app (zero-downtime)..."
-              sudo pm2 reload index.js --up date-env
+              sudo pm2 reload sum-CICD --update-env
             else
               echo "Starting new PM2 process..."
-              sudo pm2 start index.js
+              sudo pm2 start index.js --name sum-CICD
             fi
             
             # Save PM2 process list
