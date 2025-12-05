@@ -181,7 +181,7 @@ jobs:
               echo "Found backup: $latest_backup"
               tar -xzf "$latest_backup" -C /var/www/sum-CICD
               npm ci
-              pm2 reload ecosystem.config.cjs
+              pm2 reload index.js
               echo "✅ Rolled back to previous version"
             else
               echo "⚠️ No backup found, cannot rollback"
