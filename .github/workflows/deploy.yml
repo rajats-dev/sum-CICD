@@ -29,8 +29,7 @@ jobs:
       - name: Create deployment package (without node_modules)
         run: |
           mkdir -p deploy
-          cp -r * deploy/
-          rm -rf deploy/node_modules
+          rsync -av --exclude="deploy" --exclude="node_modules" --exclude=".git" ./ deploy/
           # Copy .env.example if exists
           [ -f .env.example ] && cp .env.example deploy/ || echo "No .env.example found"
           tar -czf deploy.tar.gz -C deploy .
