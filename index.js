@@ -36,10 +36,6 @@ const todos = [
   },
 ];
 
-app.get("/", (res, req) => {
-  return res.send("It's working 🙌");
-});
-
 app.get("/todo", (req, res) => {
   const todo = todos.find((t) => t.id == req.query.id);
   res.json({
@@ -89,6 +85,10 @@ app.get("/notifications", (req, res) => {
     messaging: getRandomNumber(10),
     notifications: getRandomNumber(10),
   });
+});
+
+app.get("/", (req, res) => {
+  res.status(200).send("It's working 🙌");
 });
 
 app.listen(8080, () => {
