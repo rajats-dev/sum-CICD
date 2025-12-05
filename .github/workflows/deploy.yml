@@ -29,9 +29,8 @@ jobs:
       - name: Create deployment package (without node_modules)
         run: |
           mkdir -p deploy
-          cp -r . deploy/
+          cp -r index.js deploy/
           cp package*.json deploy/
-          # cp ecosystem.config.cjs deploy
           # Copy .env.example if exists
           [ -f .env.example ] && cp .env.example deploy/ || echo "No .env.example found"
           tar -czf deploy.tar.gz -C deploy .
