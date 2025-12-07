@@ -29,7 +29,8 @@ jobs:
       - name: Create deployment package (without node_modules)
         run: |
           mkdir -p deploy
-          rsync -av --exclude="deploy" --exclude="node_modules" --exclude=".git" ./ deploy/
+          cp -r index.js deploy/
+          cp package*.json deploy/
           # Copy .env.example if exists
           [ -f .env.example ] && cp .env.example deploy/ || echo "No .env.example found"
           tar -czf deploy.tar.gz -C deploy .
@@ -82,7 +83,7 @@ jobs:
             if [ -d "dist" ]; then
               timestamp=$(date +%Y%m%d_%H%M%S)
               mkdir -p backups
-              tar -czf backups/backup_${timestamp}.tar.gz dist package.json ecosystem.config.cjs .env 2>/dev/null || true
+              tar -czf backups/backup_${timestamp}.tar.gz dist package.json .env 2>/dev/null || true
               # Keep only last 5 backups
               ls -t backups/backup_*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm
             fi
@@ -105,7 +106,7 @@ jobs:
             if [ ! -f .env ]; then
               echo "Creating default .env file..."
               echo "NODE_ENV=production" > .env
-              echo "PORT=8000" >> .env
+              echo "PORT=8080" >> .env
             fi
             
             # Create logs directory
@@ -133,7 +134,7 @@ jobs:
           COMPUTE_HOST: ${{ secrets.COMPUTE_HOST }}
         run: |
           echo "Waiting for application to start..."
-          sleep 10
+          sleep 30
 
           # Check if app responds via nginx (try multiple times)
           for i in {1..2}; do
