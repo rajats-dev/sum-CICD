@@ -88,7 +88,7 @@ app.get("/notifications", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("Server is working 🙌");
+  res.status(200).send("Server is working 🙌. Just Fine.");
 });
 
 app.listen(8080, () => {
