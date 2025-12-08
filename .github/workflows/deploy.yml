@@ -115,14 +115,14 @@ jobs:
             # Zero-downtime reload with PM2 
             if pm2 describe sum-CICD > /dev/null 2>&1; then
               echo "Reloading PM2 app (zero-downtime)..."
-              sudo pm2 reload sum-CICD --update-env
+              pm2 reload sum-CICD --update-env
             else
               echo "Starting new PM2 process..."
-              sudo pm2 start index.js --name sum-CICD
+              pm2 start index.js --name sum-CICD
             fi
             
             # Save PM2 process list
-            sudo pm2 save
+            pm2 save
            
           EOF
 
@@ -134,7 +134,7 @@ jobs:
           COMPUTE_HOST: ${{ secrets.COMPUTE_HOST }}
         run: |
           echo "Waiting for application to start..."
-          sleep 30
+          sleep 20
 
           # Check if app responds via nginx (try multiple times)
           for i in {1..2}; do
